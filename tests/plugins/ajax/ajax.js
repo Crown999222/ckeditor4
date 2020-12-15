@@ -180,6 +180,31 @@
 			} );
 
 			wait();
+		},
+
+		'test load sync text': function() {
+			var data = CKEDITOR.ajax.loadText( '../../_assets/sample.txt' );
+			assert.areSame( 'Sample Text', data, 'The loaded data doesn\'t match' );
+		},
+
+		'test load async text': function() {
+			var callback = function( data ) {
+				resume( function() {
+					assert.areSame( 'Sample Text', data, 'The loaded data doesn\'t match' );
+				} );
+			};
+
+			// Defer loading file, because in some cases on IE7 it's done synchronously, so resume() is called before wait().
+			setTimeout( function() {
+				CKEDITOR.ajax.loadText( '../../_assets/sample.txt', callback );
+			} );
+
+			wait();
+		},
+
+		'test load sync binary data': function() {
+			var data = CKEDITOR.ajax.loadBinary( '../../_assets/slick.bin' );
+			assert.areSame( 'some data', data, 'The loaded data doesn\'t match' );
 		}
 	} );
 } )();

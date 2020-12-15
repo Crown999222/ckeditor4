@@ -65,6 +65,13 @@
 			return null;
 		}
 
+		function getResponseBinary( xhr ) {
+			if ( checkStatus( xhr ) && xhr.responseType === 'blob' ) {
+				return new Blob( xhr.response );
+			}
+			return null;
+		}
+
 		function load( url, callback, getResponseFn ) {
 			var async = !!callback;
 
@@ -180,6 +187,12 @@
 			 */
 			loadXml: function( url, callback ) {
 				return load( url, callback, getResponseXml );
+			},
+			loadText: function( url, callback ) {
+				return load( url, callback, getResponseText );
+			},
+			loadBinary: function( url, callback ) {
+				return load( url, callback, getResponseBinary );
 			}
 		};
 	} )();
